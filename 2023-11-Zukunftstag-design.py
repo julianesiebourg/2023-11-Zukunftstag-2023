@@ -69,22 +69,22 @@ np.random.seed(1887)
 
 
 names = ["Emma", "Olivia", "Emily", "James", "Daniel",
-         "Benjamin", "Michael", "Alexander", "Jacob", "Samuel",
-         "Isabella", "Thomas", "Sarah", "Ava", "Charlotte", "Elizabeth",
+         "Benjamin", "Michael", "Alexander", "Samuel",
+         "Isabella", "Thomas", "Sarah", "Charlotte", "Elizabeth",
          "Liam", "Mia", "Ethan", "Ella", "Sophia", "Joshua", "Oliver", "Grace",
-         "Anna", "Lena", "Sophia", "Laila", "Emma", "Karl"]
+         "Anna", "Lena", "Laila", "Emma", "Karl"]
 len(names)
 
 
 # In[10]:
 
 
-pre_g0 = np.random.normal(8, 1.5, size=10)
-post_g0 = np.random.normal(8, 1.5, size=10)
-pre_g1 = np.random.normal(8, 1.5, size=10)
-post_g1 = np.random.normal(7, 1.5, size=10)
-pre_g2 = np.random.normal(8, 1.5, size=10)
-post_g2 = np.random.normal(5, 1.5, size=10)
+pre_g0 = np.random.normal(8, 1.5, size=9)
+post_g0 = np.random.normal(8, 1.5, size=9)
+pre_g1 = np.random.normal(8, 1.5, size=9)
+post_g1 = np.random.normal(7, 1.5, size=9)
+pre_g2 = np.random.normal(8, 1.5, size=9)
+post_g2 = np.random.normal(5, 1.5, size=9)
 pre_all = np.round(np.clip(np.concatenate((pre_g0, pre_g1, pre_g2), axis=None), 0, 10), 1)
 post_all = np.round(np.clip(np.concatenate((post_g0, post_g1, post_g2), axis=None), 0, 10))
 
@@ -92,7 +92,7 @@ post_all = np.round(np.clip(np.concatenate((post_g0, post_g1, post_g2), axis=Non
 # In[11]:
 
 
-treatments = np.concatenate((["PilleA"] * 10, ["PilleB"] * 10, ["PilleC"] * 10), axis=None)
+treatments = np.concatenate((["PilleA"] * 9, ["PilleB"] * 9, ["PilleC"] * 9), axis=None)
 
 
 # In[12]:
@@ -105,13 +105,13 @@ trial_data = pd.DataFrame({"Name":names,
                          index=names)
 
 
-# In[13]:
+# In[ ]:
 
 
 print(trial_data)
 
 
-# In[14]:
+# In[ ]:
 
 
 trial_data.sort_values(by=["Behandlung", "Name"])
@@ -119,7 +119,7 @@ trial_data.sort_values(by=["Behandlung", "Name"])
 
 # ## Wie kann man eine Liste von Angaben in einer DateFrame umwandeln?
 
-# In[15]:
+# In[ ]:
 
 
 person1 = ['David', 'PilleA', 4.7, 4.5]
@@ -133,7 +133,7 @@ person_df
 
 # ## Die Daten mit Abbildungen darstellen
 
-# In[16]:
+# In[ ]:
 
 
 import matplotlib.style as style
@@ -141,7 +141,7 @@ import matplotlib.pyplot as plt
 style.use("fast")
 
 
-# In[17]:
+# In[ ]:
 
 
 ax = trial_data.plot.bar()
@@ -150,7 +150,7 @@ plt.ylabel("Schmerzskala")
 plt.show()
 
 
-# In[18]:
+# In[ ]:
 
 
 ax = trial_data.sort_values(['Behandlung', 'Name']).plot.line(rot=90)
@@ -159,13 +159,13 @@ ax.set_xticklabels(trial_data['Name'])
 plt.show()
 
 
-# In[19]:
+# In[ ]:
 
 
 trial_data.sort_values(by=["Behandlung", "Name"]).plot.bar()
 
 
-# In[20]:
+# In[ ]:
 
 
 trial_data.boxplot(column=["Vor", "Nach"], by="Behandlung")
@@ -174,20 +174,20 @@ plt.show()
 
 # ## Mit den Daten arbeiten
 
-# In[21]:
+# In[ ]:
 
 
 trial_data["Unterschied"] = trial_data["Nach"] - trial_data["Vor"]
 print(trial_data)
 
 
-# In[22]:
+# In[ ]:
 
 
 trial_data.sort_values("Unterschied", ascending=False)
 
 
-# In[23]:
+# In[ ]:
 
 
 trial_data.boxplot(column="Unterschied", by="Behandlung", grid=False)
@@ -197,7 +197,7 @@ plt.axhline(y=0, color="k", linestyle="--")
 plt.show()
 
 
-# In[24]:
+# In[ ]:
 
 
 p = trial_data.boxplot(column="Unterschied", by="Behandlung", grid=False)
@@ -214,7 +214,7 @@ for b, d in enumerate(trial_data["Unterschied"]):
 plt.show()
 
 
-# In[25]:
+# In[ ]:
 
 
 ## density plot is not supported by Jupyter
@@ -226,7 +226,7 @@ plt.show()
 
 # ## Eine kleine statistische Analyse
 
-# In[26]:
+# In[ ]:
 
 
 import statsmodels as sm
@@ -234,14 +234,14 @@ import statsmodels.api as sma
 from statsmodels.formula.api import ols
 
 
-# In[27]:
+# In[ ]:
 
 
 pille_effect = ols('Unterschied ~ Behandlung', data = trial_data).fit()
 print(pille_effect.summary())
 
 
-# In[28]:
+# In[ ]:
 
 
 table = sma.stats.anova_lm(pille_effect)
@@ -250,7 +250,7 @@ print(table)
 
 # ## Die Daten exportieren
 
-# In[29]:
+# In[ ]:
 
 
 trial_data[['Behandlung', 'Vor', 'Nach']].to_csv("20231108-simulated-trial-data.tsv", sep="\t", index=False)
